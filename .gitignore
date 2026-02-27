@@ -1,0 +1,31 @@
+# Ambiente virtual
+venv/
+.env/
+
+# Python
+**pycache**/
+*.pyc
+*.pyo
+*.pyd
+
+# Distribuição
+build/
+dist/
+*.egg-info/
+
+# VSCode
+.vscode/
+
+# Testes
+.pytest_cache/
+.coverage
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
