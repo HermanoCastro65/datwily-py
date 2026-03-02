@@ -104,3 +104,27 @@ class Dataset:
                     report["invalid_types"].append(column)
 
         return report
+
+    def profile(self):
+        profile = {}
+
+        for column in self.df.columns:
+            series = self.df[column]
+
+            col_profile = {}
+            col_profile["missing"] = int(series.isna().sum())
+            col_profile["unique"] = int(series.nunique(dropna=True))
+
+            if pd.api.types.is_numeric_dtype(series):
+                col_profile["type"] = "numeric"
+                col_profile["mean"] = float(series.mean()) if series.count() > 0 else None
+                col_profile["min"] = float(series.min()) if series.count() > 0 else None
+                col_profile["max"] = float(series.max()) if series.count() > 0 else None
+            else:
+                col_profile["type"] = "categorical"
+                mode = series.mode(dropna=True)
+                col_profile["top"] = mode.iloc[0] if not mode.empty else None
+
+            profile[column] = col_profile
+
+        return profile
