@@ -35,3 +35,21 @@ class Dataset:
 
     def drop(self, columns):
         self.df = self.df.drop(columns=columns).copy()
+
+    def describe(self):
+        numeric_df = self.df.select_dtypes(include="number")
+
+        report = {}
+
+        for column in numeric_df.columns:
+            series = numeric_df[column]
+
+            report[column] = {
+                "count": int(series.count()),
+                "mean": float(series.mean()),
+                "std": float(series.std()),
+                "min": float(series.min()),
+                "max": float(series.max())
+            }
+
+        return report
