@@ -59,3 +59,18 @@ class Dataset:
             }
 
         return report
+
+    def split(self, test_size=0.2, seed=None):
+        if not 0 < test_size < 1:
+            raise ValueError("test_size must be between 0 and 1")
+
+        df_shuffled = self.df.sample(frac=1, random_state=seed).reset_index(drop=True)
+
+        test_count = int(len(df_shuffled) * test_size)
+
+        test_df = df_shuffled.iloc[:test_count].copy()
+        train_df = df_shuffled.iloc[test_count:].copy()
+
+        from .dataset import Dataset
+
+        return Dataset(train_df), Dataset(test_df)
