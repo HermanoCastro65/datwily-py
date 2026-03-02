@@ -74,3 +74,13 @@ class Dataset:
         from .dataset import Dataset
 
         return Dataset(train_df), Dataset(test_df)
+
+    def to_csv(self, path):
+        from pathlib import Path
+        path = Path(path)
+        self.df.to_csv(path, index=False)
+
+    def to_json(self, path):
+        from pathlib import Path
+        path = Path(path)
+        self.df.to_json(path, orient="records", indent=2)
