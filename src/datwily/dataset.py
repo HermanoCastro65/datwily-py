@@ -1,6 +1,7 @@
 import pandas as pd
 from pathlib import Path
 from .missing import MissingHandler
+from .columns import ColumnHandler
 
 class Dataset:
     def __init__(self, source):
@@ -19,14 +20,11 @@ class Dataset:
             raise TypeError("Unsupported data source")
         
         self.missing = MissingHandler(self)
+        self.columns = ColumnHandler(self)
 
     @property
     def shape(self):
         return self.df.shape
-
-    @property
-    def columns(self):
-        return list(self.df.columns)
 
     @property
     def rows(self):
