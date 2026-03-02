@@ -2,6 +2,7 @@ import pandas as pd
 from pathlib import Path
 from .missing import MissingHandler
 from .columns import ColumnHandler
+from .outliers import OutlierHandler
 
 class Dataset:
     def __init__(self, source):
@@ -21,6 +22,7 @@ class Dataset:
         
         self.missing = MissingHandler(self)
         self.columns = ColumnHandler(self)
+        self.outliers = OutlierHandler(self)
 
     @property
     def shape(self):
