@@ -4,6 +4,7 @@ from .missing import MissingHandler
 from .columns import ColumnHandler
 from .outliers import OutlierHandler
 from .encoding import EncodingHandler
+from .scaling import ScalingHandler
 
 class Dataset:
     def __init__(self, source):
@@ -25,6 +26,7 @@ class Dataset:
         self.columns = ColumnHandler(self)
         self.outliers = OutlierHandler(self)
         self.encode = EncodingHandler(self)
+        self.scale = ScalingHandler(self)
 
     @property
     def shape(self):
