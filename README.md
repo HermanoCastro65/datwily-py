@@ -181,13 +181,88 @@ print(report["salary"]["max"])
 
 ---
 
-## Rodar testes
+## Validação de dados
 
+Detecta problemas estruturais no dataset:
+
+```python
+report = data.validate()
+print(report)
 ```
-python -m pytest
+
+Exemplos detectados:
+
+* valores negativos
+* tipos inválidos
+
+---
+
+## Perfil do Dataset (Data Profiling)
+
+Analisa automaticamente cada coluna:
+
+```python
+profile = data.profile()
+print(profile)
+```
+
+Retorna:
+
+* tipo da coluna (numérica ou categórica)
+* valores ausentes
+* quantidade de valores únicos
+* média/min/max (numéricas)
+* valor mais frequente (categóricas)
+
+---
+
+## Divisão treino/teste
+
+Separar dataset para Machine Learning:
+
+```python
+train, test = data.split(test_size=0.2, seed=42)
 ```
 
 ---
+
+## Pipeline de transformação
+
+Automatizar preparação dos dados:
+
+```python
+from datwily import Pipeline
+
+pipe = Pipeline()
+pipe.add(lambda d: d.columns.normalize())
+pipe.add(lambda d: d.missing.fill_mean("age"))
+pipe.add(lambda d: d.encode.one_hot("city"))
+pipe.add(lambda d: d.scale.minmax("salary"))
+
+pipe.run(data)
+```
+
+---
+
+## Salvar e carregar pipeline
+
+```python
+pipe.save("pipeline.dtw")
+
+pipe2 = Pipeline.load("pipeline.dtw")
+pipe2.run(data)
+```
+
+---
+
+## Exportar dataset
+
+Salvar dataset preparado:
+
+```python
+data.to_csv("clean.csv")
+data.to_json("clean.json")
+```
 
 ## Objetivo do projeto
 
