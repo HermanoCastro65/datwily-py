@@ -7,3 +7,7 @@ class MissingHandler:
 
     def drop_rows(self):
         self.dataset.df = self.dataset.df.dropna()
+
+    def report(self):
+        missing_counts = self.dataset.df.isna().sum()
+        return missing_counts.to_dict()
