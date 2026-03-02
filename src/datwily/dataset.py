@@ -1,5 +1,6 @@
 import pandas as pd
 from pathlib import Path
+from .missing import MissingHandler
 
 class Dataset:
     def __init__(self, source):
@@ -16,6 +17,8 @@ class Dataset:
 
         else:
             raise TypeError("Unsupported data source")
+        
+        self.missing = MissingHandler(self)
 
     @property
     def shape(self):
