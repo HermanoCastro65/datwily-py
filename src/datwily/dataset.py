@@ -3,6 +3,7 @@ from pathlib import Path
 from .missing import MissingHandler
 from .columns import ColumnHandler
 from .outliers import OutlierHandler
+from .encoding import EncodingHandler
 
 class Dataset:
     def __init__(self, source):
@@ -23,6 +24,7 @@ class Dataset:
         self.missing = MissingHandler(self)
         self.columns = ColumnHandler(self)
         self.outliers = OutlierHandler(self)
+        self.encode = EncodingHandler(self)
 
     @property
     def shape(self):
