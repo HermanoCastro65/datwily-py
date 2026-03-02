@@ -29,3 +29,9 @@ class Dataset:
     @property
     def rows(self):
         return len(self.df)
+    
+    def select(self, columns):
+        self.df = self.df.loc[:, columns].copy()
+
+    def drop(self, columns):
+        self.df = self.df.drop(columns=columns).copy()
