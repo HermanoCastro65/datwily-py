@@ -16,3 +16,15 @@ class Dataset:
 
         else:
             raise TypeError("Unsupported data source")
+
+    @property
+    def shape(self):
+        return self.df.shape
+
+    @property
+    def columns(self):
+        return list(self.df.columns)
+
+    @property
+    def rows(self):
+        return len(self.df)
