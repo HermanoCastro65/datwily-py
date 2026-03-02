@@ -84,3 +84,23 @@ class Dataset:
         from pathlib import Path
         path = Path(path)
         self.df.to_json(path, orient="records", indent=2)
+
+    def validate(self):
+        report = {
+            "negative_values": [],
+            "invalid_types": []
+        }
+
+        for column in self.df.columns:
+            series = self.df[column]
+
+            if pd.api.types.is_numeric_dtype(series):
+                if (series < 0).any():
+                    report["negative_values"].append(column)
+            else:
+                try:
+                    series.astype(float)
+                except:
+                    report["invalid_types"].append(column)
+
+        return report
