@@ -6,6 +6,7 @@ from .outliers import OutlierHandler
 from .encoding import EncodingHandler
 from .scaling import ScalingHandler
 
+
 class Dataset:
     def __init__(self, source):
         if isinstance(source, pd.DataFrame):
@@ -17,11 +18,20 @@ class Dataset:
             if not path.exists():
                 raise FileNotFoundError(f"File not found: {path}")
 
-            self.df = pd.read_csv(path)
+            try:
+                df = pd.read_csv(path, encoding="utf-8")
+                if df.shape[1] == 1:
+                    df = pd.read_csv(path, encoding="utf-8", sep=";")
+            except UnicodeDecodeError:
+                df = pd.read_csv(path, encoding="latin-1")
+                if df.shape[1] == 1:
+                    df = pd.read_csv(path, encoding="latin-1", sep=";")
+
+            self.df = df
 
         else:
             raise TypeError("Unsupported data source")
-        
+
         self.missing = MissingHandler(self)
         self.columns = ColumnHandler(self)
         self.outliers = OutlierHandler(self)
@@ -35,7 +45,7 @@ class Dataset:
     @property
     def rows(self):
         return len(self.df)
-    
+
     def select(self, columns):
         self.df = self.df.loc[:, columns].copy()
 
@@ -71,17 +81,13 @@ class Dataset:
         test_df = df_shuffled.iloc[:test_count].copy()
         train_df = df_shuffled.iloc[test_count:].copy()
 
-        from .dataset import Dataset
-
         return Dataset(train_df), Dataset(test_df)
 
     def to_csv(self, path):
-        from pathlib import Path
         path = Path(path)
         self.df.to_csv(path, index=False)
 
     def to_json(self, path):
-        from pathlib import Path
         path = Path(path)
         self.df.to_json(path, orient="records", indent=2)
 
