@@ -5,7 +5,14 @@ class Dataset:
     def __init__(self, source):
         if isinstance(source, pd.DataFrame):
             self.df = source
+
         elif isinstance(source, (str, Path)):
-            self.df = pd.read_csv(source)
+            path = Path(source)
+
+            if not path.exists():
+                raise FileNotFoundError(f"File not found: {path}")
+
+            self.df = pd.read_csv(path)
+
         else:
             raise TypeError("Unsupported data source")
